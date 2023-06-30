@@ -1,25 +1,56 @@
-import logo from './logo.svg';
+//css
 import './App.css';
 
+//React
+import { useCallback, useEffect, useState} from "react";
+
+
+//data
+import{ wordsList } from "./data/words";
+
+
+//components
+import StartScreen from './components/StartScreen';
+import Game from './components/Game';
+import GameOver from './components/GameOver';
+
+const stages = [
+  {id: 1, name:"start"},
+  {id: 2, name: "game"},
+  {id: 3, name: "end"},
+]
+
 function App() {
+   const[gameStage, setGameStage] = useState(stages[0].name);
+   const [words] = useState(wordsList);
+
+   const startGame = () => {
+    setGameStage(stages[1].name);
+   };
+
+
+   // process the latter imput
+   const verifyLetter = () => {
+    setGameStage(stages[2].name);
+   };
+
+   //Restarts the Game
+   const retry = () => {
+     setGameStage(stages[0].name);
+
+   };
+
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      
+     {gameStage === 'start' && <StartScreen startGame={startGame}/>}
+     {gameStage === 'game' && <Game verifyLetter={verifyLetter}/>}
+     {gameStage === 'end' && <GameOver retry={retry}/>}
+
+    
     </div>
   );
-}
+};
 
 export default App;
